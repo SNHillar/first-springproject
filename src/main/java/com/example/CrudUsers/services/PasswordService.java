@@ -25,7 +25,7 @@ public class PasswordService {
 
     // Login method
     public User login(String username, String passwordPlano) {
-        Optional<Password> passwordOpt = passwordRepository.findByUsername(username);
+        Optional<Password> passwordOpt = passwordRepository.findByUsernameUsername(username);
 
         if (passwordOpt.isEmpty()) {
             throw new IllegalArgumentException("Invalid username or password");
@@ -43,7 +43,7 @@ public class PasswordService {
 
     // Change password method
     @Transactional
-    public void changePassword(long id, String newPasswordPlano) {
+    public void changePassword(int id, String newPasswordPlano) {
 
         if (newPasswordPlano == null || newPasswordPlano.isEmpty()) {
             throw new IllegalArgumentException("New password cannot be empty");

@@ -5,10 +5,9 @@ import com.example.CrudUsers.models.User;
 import com.example.CrudUsers.services.PasswordService;
 import com.example.CrudUsers.services.UserService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("api/users")
@@ -29,6 +28,8 @@ public class UserController {
         User newUser = new User();
         newUser.setUsername(userDTO.getUsername());
         newUser.setEmail(userDTO.getEmail());
+        newUser.setActivo(true);
+        newUser.setEliminado(false);
         User registeredUser = userService.registerUser(newUser, userDTO.getPasswordPlano());
         return ResponseEntity.ok(registeredUser);
     }
@@ -36,6 +37,9 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<User> loginUser(@RequestBody UserRegistrationDTO loginDTO) {
         User loggedInUser = passwordService.login(loginDTO.getUsername(), loginDTO.getPasswordPlano());
+        if(loggedInUser == null){
+            return ResponseEntity.status(401).build();
+        }
         return ResponseEntity.ok(loggedInUser);
     }
 }
